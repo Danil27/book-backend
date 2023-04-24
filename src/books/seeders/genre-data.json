@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1000,
+        "name": "Historical fiction"
+    },
+    {
+        "id": 1001,
+        "name": "Dystopia"
+    },
+    {
+        "id": 1002,
+        "name": "Fantasy"
+    },
+    {
+        "id": 1003,
+        "name": "Romance novel"
+    },
+    {
+        "id": 1004,
+        "name": "Horror"
+    },
+    {
+        "id": 1005,
+        "name": "Classic"
+    }
+]
