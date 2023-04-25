@@ -59,7 +59,7 @@ export class BooksService {
     const { name, authorIds, edition, genreIds, publicationDate } = book;
     try {
       return this.prismaService.book.update({
-        where: { id: bookId },
+        where: { id: +bookId },
         data: {
           name,
           author: {
@@ -86,7 +86,7 @@ export class BooksService {
 
   public async delete(id: number) {
     return this.prismaService.book.delete({
-      where: { id },
+      where: { id: +id },
     });
   }
 }

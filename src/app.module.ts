@@ -9,7 +9,6 @@ import { GenresModule } from './genres/gentes.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
 import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
   imports: [
@@ -28,11 +27,6 @@ import { RolesGuard } from './common/guards/roles.guard';
     }),
   ],
   controllers: [],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  providers: [],
 })
 export class AppModule {}

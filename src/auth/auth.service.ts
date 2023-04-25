@@ -45,6 +45,7 @@ export class AuthService {
   public async signIn(signInDto: SignInDto): Promise<TokenDto> {
     const user = await this.usersService.findByEmail(signInDto.email, {
       password: true,
+      role: true,
     });
 
     if (!user)

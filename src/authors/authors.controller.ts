@@ -23,6 +23,7 @@ import { CreateAuthorDto } from './dto/create-author.dto';
 import { AuthorsService } from './authors.service';
 import { FindAuthorDto } from './dto/find-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
+import { IsAdminGuard } from '../common/guards/is-admin.guard';
 
 @ApiTags('Authors')
 @Controller('authors')
@@ -31,7 +32,7 @@ export class AuthorsController {
 
   @Post()
   @ApiOperation({ summary: 'Create author' })
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, IsAdminGuard)
   @ApiBody({ type: CreateAuthorDto })
   @ApiBearerAuth()
   @ApiResponse({
@@ -53,7 +54,7 @@ export class AuthorsController {
     description: 'Author not found by id',
   })
   async findByID(@Param('id') id: number) {
-    const authorById = await this.authorsService.findById(id);
+    const authorById = await this.authorsService.findById(+id);
 
     if (!authorById) {
       throw new HttpException('Author not found by id', HttpStatus.NOT_FOUND);
@@ -78,7 +79,7 @@ export class AuthorsController {
 
   @Put(':id')
   @ApiOperation({ summary: 'Update author' })
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, IsAdminGuard)
   @ApiBody({ type: UpdateAuthorDto })
   @ApiBearerAuth()
   @ApiResponse({
@@ -89,6 +90,6 @@ export class AuthorsController {
     @Body() updateAuthorDto: UpdateAuthorDto,
     @Param('id') authorId: number,
   ) {
-    return await this.authorsService.update(authorId, updateAuthorDto);
+    return await this.authorsService.update(+authorId, updateAuthorDto);
   }
 }

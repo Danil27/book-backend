@@ -30,6 +30,7 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { join } from 'path';
+import { IsAdminGuard } from '../common/guards/is-admin.guard';
 
 @ApiTags('Books')
 @Controller('books')
@@ -38,7 +39,7 @@ export class BookController {
 
   @Post()
   @ApiOperation({ summary: 'Create book' })
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, IsAdminGuard)
   @ApiBody({ type: CreateBookDto })
   @ApiBearerAuth()
   @UseInterceptors(
@@ -97,7 +98,7 @@ export class BookController {
 
   @Put(':id')
   @ApiOperation({ summary: 'Update book' })
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, IsAdminGuard)
   @ApiBody({ type: UpdateBookDto })
   @ApiBearerAuth()
   @ApiResponse({
@@ -113,7 +114,7 @@ export class BookController {
 
   @Delete(':bookId')
   @ApiOperation({ summary: 'Delete book' })
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, IsAdminGuard)
   @ApiBearerAuth()
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,

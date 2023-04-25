@@ -10,7 +10,7 @@ type CurrentUserDecoratorParam = {
 
 export const CurrentUser = createParamDecorator(
   (
-    data: CurrentUserDecoratorParam = { requireUser: true },
+    data: CurrentUserDecoratorParam = { requireUser: false },
     ctx: ExecutionContext,
   ) => {
     const request = ctx.switchToHttp().getRequest();
