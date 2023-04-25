@@ -20,11 +20,11 @@ export class AuthService {
   }
 
   public async signUp(signUpDto: SignUpDto): Promise<TokenDto> {
-    const { id } = await this.usersService.create({
+    const { id, role } = await this.usersService.create({
       ...signUpDto,
     });
 
-    return this.generateTokens({ id });
+    return this.generateTokens({ id, role });
   }
 
   public verifyToken(token: string): JwtPayloadDto | any {
@@ -34,7 +34,6 @@ export class AuthService {
   }
 
   private generateTokens(payload: JwtPayloadDto): TokenDto {
-    console.log(this.jwt_secret)
     return {
       access_token: this.jwtService.sign(payload, {
         secret: this.jwt_secret,
@@ -62,6 +61,7 @@ export class AuthService {
 
     return this.generateTokens({
       id: user.id,
+      role: user.role,
     });
   }
 }

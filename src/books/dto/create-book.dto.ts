@@ -19,6 +19,7 @@ export class CreateBookDto {
     description: 'Publication date',
     nullable: false,
     required: true,
+    default: new Date(),
   })
   publicationDate: Date;
 
@@ -27,15 +28,15 @@ export class CreateBookDto {
     nullable: false,
     required: true,
   })
-  authorIds: number[];
+  authorIds: string;
 
   @ApiProperty({
     description: 'Genre id',
     nullable: false,
     required: true,
   })
-  genreIds: number[];
+  genreIds: string;
 
   @ApiProperty({ type: 'string', format: 'binary', required: true })
-  file: Express.Multer.File
+  file: Express.Multer.File;
 }

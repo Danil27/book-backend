@@ -2,23 +2,33 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class BooksService {
-  constructor(private readonly prismaService: PrismaService) {}
+  private readonly api_url;
 
-  public async create(data: CreateBookDto) {
+  constructor(
+    private readonly prismaService: PrismaService,
+    private configService: ConfigService,
+  ) {
+    this.api_url = this.configService.get('api_url');
+  }
+
+  public async create(data: CreateBookDto, fileName: string) {
     const { authorIds, edition, genreIds, name, publicationDate } = data;
+
     return await this.prismaService.book.create({
       data: {
         edition,
         name,
         publicationDate,
+        link: this.api_url + 'public' + fileName,
         author: {
-          connect: authorIds.map((id) => ({ id })),
+          connect: authorIds.split(',').map((id) => ({ id: +id })),
         },
         genre: {
-          connect: genreIds.map((id) => ({ id })),
+          connect: genreIds.split(',').map((id) => ({ id: +id })),
         },
       },
     });
@@ -26,9 +36,7 @@ export class BooksService {
 
   public async findById(id: number) {
     return this.prismaService.book.findFirst({
-      where: {
-        id,
-      },
+      where: { id: +id },
     });
   }
 

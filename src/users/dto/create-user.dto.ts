@@ -1,24 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, MaxLength, MinLength, ValidateIf } from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
+import { Role } from '@prisma/client';
 
 export class CreateUserDto {
   @IsEmail()
-  @ValidateIf((data) => !data.googleId)
   @ApiProperty({ description: 'User Email', nullable: true, required: false })
-  email?: string;
+  email: string;
 
   @MinLength(3)
   @MaxLength(32)
-  @ValidateIf((data) => !data.googleId)
   @ApiProperty({ description: 'Name', nullable: true, required: false })
   name?: string;
 
   @MinLength(6)
-  @ValidateIf((data) => !data.googleId)
   @ApiProperty({
     description: 'User password',
     nullable: true,
     required: false,
   })
-  password?: string;
+  password: string;
+
+  @ApiProperty({ description: 'Role', nullable: true, required: false })
+  @IsNotEmpty()
+  role?: Role;
 }

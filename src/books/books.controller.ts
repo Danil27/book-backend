@@ -9,11 +9,14 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
   ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
@@ -24,6 +27,9 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { BooksService } from './books.service';
 import { FindBookDto } from './dto/find-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { join } from 'path';
 
 @ApiTags('Books')
 @Controller('books')
@@ -35,12 +41,24 @@ export class BookController {
   @UseGuards(JwtGuard)
   @ApiBody({ type: CreateBookDto })
   @ApiBearerAuth()
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: join(__dirname, '..', '..', '/public'),
+      }),
+    }),
+  )
+  @ApiConsumes('multipart/form-data')
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description: 'Access token is invalid',
   })
-  async create(@Body() createBookDto: CreateBookDto) {
-    return await this.booksService.create(createBookDto);
+  async create(
+    @Body() createBookDto: CreateBookDto,
+    @UploadedFile()
+    file: Express.Multer.File,
+  ) {
+    return await this.booksService.create(createBookDto, file.originalname);
   }
 
   @Get(':id')

@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
+import { Role } from '@prisma/client';
 
 export const DEFAULT_USER_SELECT_FIELDS: Prisma.UserSelect = {
   id: true,
@@ -30,6 +31,7 @@ export class UsersService {
         email: createUserDto.email,
         password: password ? await bcrypt.hash(password, 12) : undefined,
         name,
+        role: createUserDto.role ? createUserDto.role : Role.USER,
       },
       select: {
         ...DEFAULT_USER_SELECT_FIELDS,

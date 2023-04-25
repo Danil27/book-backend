@@ -10,11 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 model User {
   id       String  @id @default(uuid())
   email    String  @unique
   name     String?
   password String
+  role     Role    @default(USER)
 }
 
 model Author {
@@ -25,9 +31,9 @@ model Author {
 }
 
 model Genre {
-  id     Int    @id
-  name   String
-  book   Book[]
+  id   Int    @id
+  name String
+  book Book[]
 }
 
 model Book {
@@ -35,6 +41,7 @@ model Book {
   name            String
   publicationDate DateTime
   edition         String
+  link            String
   genre           Genre[]
   author          Author[]
 }

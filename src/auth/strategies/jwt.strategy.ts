@@ -13,6 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   public validate(payload: any): unknown {
+    console.log(payload)
     return payload;
   }
 }

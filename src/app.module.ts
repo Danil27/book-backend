@@ -8,6 +8,8 @@ import { AuthorModule } from './authors/authors.module';
 import { GenresModule } from './genres/gentes.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
   imports: [
@@ -26,6 +28,11 @@ import { resolve } from 'path';
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
