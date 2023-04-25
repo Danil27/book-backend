@@ -34,6 +34,7 @@ model Book {
   id              Int      @id @default(autoincrement())
   name            String
   publicationDate DateTime
+  edition         String
   genre           Genre[]
   author          Author[]
 }
